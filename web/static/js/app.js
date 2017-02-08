@@ -17,9 +17,9 @@ let login = form => {
   })
 
   phone.ready(() => { form.username.style.background="#55ff5b" })
-  phone.receive((session) => {
-    session.connected((session) => { video_out.appendChild(session.video) })
-    session.ended((session) => { video_out.innerHTML='' })
+  phone.receive(session => {
+    session.connected(session => { video_out.appendChild(session.video) })
+    session.ended(session => { video_out.innerHTML='' })
   })
 
   return false
