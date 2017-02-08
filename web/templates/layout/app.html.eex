@@ -22,6 +22,7 @@
 
     <%= if @view_module.include_js do %>
       <script src="https://cdn.pubnub.com/pubnub-3.16.5.min.js"></script>
+      <script src="https://cdn.pubnub.com/webrtc/webrtc.js"></script>
       <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <% end %>
   </body>
