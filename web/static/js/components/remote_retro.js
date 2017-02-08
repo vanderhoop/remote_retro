@@ -16,6 +16,25 @@ class RemoteRetro extends Component {
   }
 
   handleSubmitUsername(user) {
+    let phone = PHONE({
+      number: user,
+      publish_key: 'pub-c-774ec798-47ab-4add-a4e0-4db1282eeb45',
+      subscribe_key: 'sub-c-dd561ef6-edf9-11e6-8bf6-02ee2ddab7fe',
+      ssl: true,
+    })
+
+    phone.ready(() => { console.log("ready") })
+    phone.receive(session => {
+      session.connected(session => {
+        console.log("==============is this a video element?")
+        console.log(session.video)
+        console.log("==============is this a video element?")
+        document.querySelector('body').appendChild(session.video)
+      })
+
+      session.ended(session => { console.log('gonna clear a bunch of video!') })
+    })
+
     let socket = new Socket("/socket", {params: { user }})
     socket.connect()
     let presences = {}
@@ -32,6 +51,11 @@ class RemoteRetro extends Component {
     retroChannel.on("presence_diff", diff => {
       presences = Presence.syncDiff(presences, diff)
       const users = values(presences).map(presence => presence.user)
+
+      users.forEach(user => {
+        phone.dial(user.name)
+      })
+
       this.setState({ users, retroChannel })
     })
 
