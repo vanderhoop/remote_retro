@@ -16,7 +16,7 @@ class RemoteRetro extends Component {
   }
 
   handleSubmitUsername(user) {
-    let phone = PHONE({
+    let phone = window.phone = PHONE({
       number: user,
       publish_key: 'pub-c-774ec798-47ab-4add-a4e0-4db1282eeb45',
       subscribe_key: 'sub-c-dd561ef6-edf9-11e6-8bf6-02ee2ddab7fe',
