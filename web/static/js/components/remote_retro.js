@@ -26,10 +26,15 @@ class RemoteRetro extends Component {
     phone.ready(() => { console.log("ready") })
     phone.receive(session => {
       session.connected(session => {
-        console.log("==============is this a video element?")
-        console.log(session.video)
-        console.log("==============is this a video element?")
-        document.querySelector('body').appendChild(session.video)
+        const newUsers = this.state.users.map(user => {
+          if (session.video.dataset.number === user.name) {
+            user.videoSrc = session.video.src
+          }
+          return user
+        })
+
+        const newState = { ...this.state, users: newUsers }
+        this.setState(newState)
       })
 
       session.ended(session => { console.log('gonna clear a bunch of video!') })
