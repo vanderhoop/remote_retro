@@ -15,9 +15,9 @@ i {
   flex: 1;
 }
 
-video {
+.ui.grid video {
   height: 6rem;
-  padding: 0;
+  padding: 0 0;
 }
 
 /* Semantic Overrides */
