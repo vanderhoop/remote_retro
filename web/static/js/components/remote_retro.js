@@ -60,6 +60,7 @@ class RemoteRetro extends Component {
       users.forEach(user => {
         if (user.name === username) {
           user.videoSrc = phone.video.src
+          user.muted = true
         } else {
           phone.dial(user.name)
         }

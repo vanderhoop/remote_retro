@@ -5,7 +5,7 @@ function UserListItem(props) {
     <li className="item">
       <div className="ui center aligned grid">
         <div className="ui row">{ props.user.name }</div>
-        <video src={ props.user.videoSrc } autoPlay></video>
+        <video src={ props.user.videoSrc } muted={ props.user.muted } autoPlay></video>
       </div>
     </li>
   )
