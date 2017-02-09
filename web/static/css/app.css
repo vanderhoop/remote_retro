@@ -17,6 +17,8 @@ i {
 
 video {
   width: 10rem;
+  position: absolute;
+  bottom: 0;
 }
 
 /* Semantic Overrides */
