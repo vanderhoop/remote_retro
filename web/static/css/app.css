@@ -15,6 +15,10 @@ i {
   flex: 1;
 }
 
+video {
+  width: 10rem;
+}
+
 /* Semantic Overrides */
 
 ul.ui.list li::before { content: ""; }
