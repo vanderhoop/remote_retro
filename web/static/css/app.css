@@ -16,7 +16,8 @@ i {
 }
 
 video {
-  height: 7rem;
+  height: 6rem;
+  padding: 0;
 }
 
 /* Semantic Overrides */
