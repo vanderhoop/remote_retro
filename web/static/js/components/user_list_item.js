@@ -4,10 +4,8 @@ function UserListItem(props) {
   return (
     <li className="item">
       <div className="ui center aligned grid">
-        <video src={ props.user.videoSrc } autoPlay>
-          <div className="ui row">{ props.user.name }</div>
-          <i className="huge user icon"></i>
-        </video>
+        <div className="ui row">{ props.user.name }</div>
+        <video src={ props.user.videoSrc } autoPlay></video>
       </div>
     </li>
   )
