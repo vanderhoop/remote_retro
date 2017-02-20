@@ -16,7 +16,7 @@ defmodule LobbyRealtimeUpdateTest do
     user_list_text = session_one |> find("#user-list") |> text
 
     assert String.contains?(user_list_text, "Todd Grundy")
-    assert String.contains?(user_list_text, "Martha Bernham")
+    assert String.contains?(user_list_text, "Marta Bernham")
 
     Wallaby.end_session(session_two)
 
