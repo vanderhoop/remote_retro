@@ -26,8 +26,9 @@ dependencies:
     - webpack
 test:
   override:
+    - mocha:
+        parallel: true
     - mix test --exclude feature_test:
-      parallel: true
+        parallel: true
     - mix test --only feature_test:
-      parallel: true
-    - mocha
+        parallel: true
