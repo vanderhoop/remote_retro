@@ -20,6 +20,11 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
 
+    <button class="ui right labeled teal icon button">
+      Proceed to Action Items Stage
+      <i class="arrow right icon"></i>
+    </button>
+
     <%= if @view_module.include_js do %>
       <script>window.token = "<%= assigns[:token] %>"</script>
       <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
