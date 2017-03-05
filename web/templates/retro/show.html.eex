@@ -10,7 +10,14 @@
     <i class="idea icon"></i>
     <div class="content">
       <div class="title">Idea Generation</div>
-      <div class="description">Invite any and all ideas from all participants</div>
+      <div class="description">Invite any and all ideas from participants</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="mute icon"></i>
+    <div class="content">
+      <div class="title">Mute Mapping</div>
+      <div class="description">Group related ideas without speaking to generate implicit categories</div>
     </div>
   </div>
   <div class="disabled step">
