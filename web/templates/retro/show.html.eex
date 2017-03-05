@@ -1,2 +1,45 @@
+<div class="ui mini steps">
+  <div class="completed disabled step">
+    <i class="align justify icon"></i>
+    <div class="content">
+      <div class="title">The Prime Directive</div>
+      <div class="description">Frame the retro as a safe, collaborative space</div>
+    </div>
+  </div>
+  <div class="step">
+    <i class="idea icon"></i>
+    <div class="content">
+      <div class="title">Idea Generation</div>
+      <div class="description">Invite any and all ideas from all participants</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="comments icon"></i>
+    <div class="content">
+      <div class="title">Action Item Generation</div>
+      <div class="description">Identify and assign the most useful actions to take</div>
+    </div>
+  </div>
+  <div class="disabled step">
+    <i class="send icon"></i>
+    <div class="content">
+      <div class="title">Action Item Distribution</div>
+      <div class="description">Distribute action items to retro participants</div>
+    </div>
+  </div>
+</div>
+
+<header class="ui attached inverted segment">
+  <div class="ui large breadcrumb">
+    <a class="ui section">The Prime Directive</a>
+    <i class="check light green circle icon divider"></i>
+    <i class="long light grey right arrow large icon divider"></i>
+    <a class="ui section">Idea Generation</a>
+    <i class="check light green circle icon divider"></i>
+    <i class="long light grey right arrow large icon divider"></i>
+    <div class="active section">Action Item Generation</div>
+  </div>
+</header>
+
 <div class="react-root">
 </div>

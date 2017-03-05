@@ -51,7 +51,6 @@ class IdeaSubmissionForm extends Component {
               <input
                 type="text"
                 name="idea"
-                autoFocus
                 ref={(input) => { this.ideaInput = input }}
                 value={this.state.body}
                 onChange={this.handleIdeaChange}
