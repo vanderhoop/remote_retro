@@ -1,4 +1,4 @@
-<div class="ui mini steps">
+<div class="ui mini fluid steps">
   <div class="completed disabled link step">
     <i class="align justify icon"></i>
     <div class="content">
@@ -6,47 +6,42 @@
       <div class="description">Frame the retro as a safe, collaborative space</div>
     </div>
   </div>
-  <div class="active step">
+  <div class="active link step">
     <i class="idea icon"></i>
     <div class="content">
       <div class="title">Idea Generation</div>
-      <div class="description">Invite any and all ideas from participants</div>
+      <div class="description">Invite ideas from participants</div>
     </div>
   </div>
-  <a class="link step">
+  <div class="link step">
     <i class="mute icon"></i>
     <div class="content">
       <div class="title">Mute Mapping</div>
-      <div class="description">Group related ideas into categories without speaking</div>
+      <div class="description">Group ideas into categories without speaking</div>
     </div>
-  </a>
+  </div>
   <div class="disabled link step">
+    <i class="checkmark box icon"></i>
+    <div class="content">
+      <div class="title">Labeling + Voting</div>
+      <div class="description">Vote on categories for discussion</div>
+    </div>
+  </div>
+  <div class="disabled step">
     <i class="comments icon"></i>
     <div class="content">
       <div class="title">Action Item Generation</div>
-      <div class="description">Identify and assign the most useful actions to take</div>
+      <div class="description">Identify and assign action items</div>
     </div>
   </div>
   <div class="disabled link step">
     <i class="send icon"></i>
     <div class="content">
       <div class="title">Action Item Distribution</div>
-      <div class="description">Distribute action items to participants</div>
+      <div class="description">Distribute action items</div>
     </div>
   </div>
 </div>
-
-<header class="ui attached inverted segment">
-  <div class="ui large breadcrumb">
-    <a class="ui section">The Prime Directive</a>
-    <i class="check light green circle icon divider"></i>
-    <i class="long light grey right arrow large icon divider"></i>
-    <a class="ui section">Idea Generation</a>
-    <i class="check light green circle icon divider"></i>
-    <i class="long light grey right arrow large icon divider"></i>
-    <div class="active section">Action Item Generation</div>
-  </div>
-</header>
 
 <div class="react-root">
 </div>
