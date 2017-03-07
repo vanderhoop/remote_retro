@@ -2,6 +2,7 @@ test/**/*_test.js
 --color
 --require mock-css-modules
 --require babel-register
+--require=env-test
 --require babel-register
 --require jsdom-global/register
 --require test/support/js/test_helper.js
