@@ -34,7 +34,7 @@ class RemoteRetro extends Component {
       this.setState(retro)
     })
 
-    retroChannel.on("new_idea_received", newIdea => {
+    retroChannel.on("new_idea_created", newIdea => {
       this.setState({ ideas: [...this.state.ideas, newIdea] })
     })
 

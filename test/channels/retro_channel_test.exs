@@ -83,15 +83,6 @@ defmodule RemoteRetro.RetroChannelTest do
     end
   end
 
-  describe "pushing a new idea to the socket" do
-    setup [:join_the_retro_channel]
-    test "results in the broadcast of the new idea to all connected clients", %{socket: socket} do
-      push(socket, "new_idea", %{category: "happy", body: "we're pacing well", author: "Travis"})
-
-      assert_broadcast("new_idea_received", %{category: "happy", body: "we're pacing well", id: _, author: "Travis"})
-    end
-  end
-
   describe "pushing an `enable_edit_state` event to the socket" do
     setup [:join_the_retro_channel]
     test "broadcasts the same event with the given payload", %{socket: socket} do

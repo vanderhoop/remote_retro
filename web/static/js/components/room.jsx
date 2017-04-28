@@ -39,7 +39,6 @@ function Room(props) {
         <div className="thirteen wide column">
           <IdeaSubmissionForm
             currentPresence={currentPresence}
-            retroChannel={retroChannel}
             showActionItem={showActionItem}
           />
         </div>

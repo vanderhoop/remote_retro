@@ -23,6 +23,7 @@
     <%= if @view_module.include_js do %>
       <script>window.userToken = "<%= assigns[:user_token] %>"</script>
       <script>window.retroUUID = "<%= assigns[:retro_uuid] %>"</script>
+      <script>window.csrfToken = "<%= get_csrf_token() %>"</script>
       <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <% end %>
   </body>

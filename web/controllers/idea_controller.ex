@@ -1,13 +1,14 @@
 defmodule RemoteRetro.IdeaController do
   use RemoteRetro.Web, :controller
 
-  alias RemoteRetro.Idea
+  alias RemoteRetro.{Idea, Endpoint}
 
   def create(conn, %{"retro_id" => retro_id} = idea_params) do
     changeset = Idea.changeset(%Idea{}, idea_params)
 
     case Repo.insert(changeset) do
       {:ok, idea} ->
+        Endpoint.broadcast!("retro:#{retro_id}", "new_idea_created", idea)
         conn
         |> put_status(:created)
         |> put_resp_header("location", retro_idea_api_path(conn, :show, retro_id, idea))

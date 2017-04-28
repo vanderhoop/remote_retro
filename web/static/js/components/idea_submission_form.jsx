@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import * as AppPropTypes from "../prop_types"
 
+import IdeaRestClient from "../clients/idea_rest_client"
 import styles from "./css_modules/idea_submission_form.css"
 
 const PLACEHOLDER_TEXTS = {
@@ -38,7 +39,7 @@ class IdeaSubmissionForm extends Component {
     const { currentPresence } = this.props
     event.preventDefault()
     const newIdea = { ...this.state, author: currentPresence.user.given_name }
-    this.props.retroChannel.push("new_idea", newIdea)
+    IdeaRestClient.post(newIdea)
     this.setState({ body: "" })
   }
 
@@ -96,7 +97,6 @@ class IdeaSubmissionForm extends Component {
 
 IdeaSubmissionForm.propTypes = {
   currentPresence: AppPropTypes.presence.isRequired,
-  retroChannel: AppPropTypes.retroChannel.isRequired,
   showActionItem: React.PropTypes.bool.isRequired,
 }
 

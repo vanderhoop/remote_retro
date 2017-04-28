@@ -19,7 +19,8 @@
     "react-redux": "^5.0.4",
     "redux": "^3.6.0",
     "semantic-ui-css": "2.2.10",
-    "sinon": "^1.17.7"
+    "sinon": "^1.17.7",
+    "superagent": "^3.5.2"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
@@ -41,6 +42,7 @@
     "mock-css-modules": "^1.0.0",
     "react-addons-test-utils": "^15.4.2",
     "style-loader": "^0.13.1",
+    "superagent-mocker": "^0.5.2",
     "webpack": "^2.2.1",
     "webpack-notifier": "^1.5.0"
   }

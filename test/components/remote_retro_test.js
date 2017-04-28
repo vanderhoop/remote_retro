@@ -36,11 +36,11 @@ describe("<RemoteRetro>", () => {
       })
     })
 
-    describe("on `new_idea_received`", () => {
+    describe("on `new_idea_created`", () => {
       it("pushes the value passed in the payload into the `ideas` array", () => {
         wrapper.setState({ ideas: [{ body: "first idear" }] })
 
-        retroChannel.trigger("new_idea_received", { body: "zerp" })
+        retroChannel.trigger("new_idea_created", { body: "zerp" })
 
         expect(wrapper.state("ideas")).to.eql([
           { body: "first idear" },

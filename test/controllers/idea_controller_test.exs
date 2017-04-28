@@ -1,7 +1,8 @@
 defmodule RemoteRetro.IdeaControllerTest do
   use RemoteRetro.ConnCase
 
-  alias RemoteRetro.{Idea, Retro}
+  alias RemoteRetro.{Idea, Retro, Endpoint}
+
   @valid_attrs %{body: "Collaboration!", category: "happy", author: "Tim"}
   @invalid_attrs %{name: "derp"}
 
@@ -29,6 +30,20 @@ defmodule RemoteRetro.IdeaControllerTest do
     assert Repo.get_by(Idea, @valid_attrs)
   end
 
+  describe "creation broadcast" do
+    setup :subscribe_to_retro_channel
+
+    test "the creation is broadcasted to the retro's subscribers", %{conn: conn, retro: retro} do
+      topic = "retro:#{retro.id}"
+      post conn, retro_idea_api_path(conn, :create, retro.id), @valid_attrs
+      assert_receive %Phoenix.Socket.Broadcast{
+        topic: ^topic,
+        event: "new_idea_created",
+        payload: @valid_attrs
+      }
+    end
+  end
+
   test "does not create resource and renders errors when data is invalid", %{conn: conn, retro: retro} do
     conn = post conn, retro_idea_api_path(conn, :create, retro.id), idea: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
@@ -52,5 +67,12 @@ defmodule RemoteRetro.IdeaControllerTest do
     conn = delete conn, retro_idea_api_path(conn, :delete, retro.id, idea)
     assert response(conn, 204)
     refute Repo.get(Idea, idea.id)
+  end
+
+  defp subscribe_to_retro_channel(%{retro: retro}) do
+    topic = "retro:#{retro.id}"
+    Endpoint.subscribe(topic)
+    on_exit fn -> Endpoint.unsubscribe(topic) end
+    :ok
   end
 end
