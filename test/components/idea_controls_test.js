@@ -3,21 +3,23 @@ import { shallow } from "enzyme"
 import sinon from "sinon"
 
 import IdeaControls from "../../web/static/js/components/idea_controls"
+import IdeaRestClient from "../../web/static/js/clients/idea_rest_client"
 
 describe("<IdeaControls />", () => {
   const idea = { id: 666, category: "sad", body: "redundant tests", author: "Trizzle" }
+  const mockRetroChannel = { on: () => {}, push: () => {} }
 
   describe("on click of the removal icon", () => {
-    it("pushes an `delete_idea` event to the retro channel, passing the given idea's id", () => {
-      const retroChannel = { on: () => {}, push: sinon.spy() }
+    it("invokes the rest client's `delete` method, passing the given idea's id", () => {
+      const deleteStub = sinon.stub(IdeaRestClient, "delete")
 
       const wrapper = shallow(
-        <IdeaControls idea={idea} retroChannel={retroChannel} />
+        <IdeaControls idea={idea} retroChannel={mockRetroChannel} IdeaRestClient={IdeaRestClient} />
       )
 
       wrapper.find(".remove.icon").simulate("click")
       expect(
-        retroChannel.push.calledWith("delete_idea", 666)
+        deleteStub.calledWith(666)
       ).to.equal(true)
     })
   })
@@ -27,7 +29,7 @@ describe("<IdeaControls />", () => {
       const retroChannel = { on: () => {}, push: sinon.spy() }
 
       const wrapper = shallow(
-        <IdeaControls idea={idea} retroChannel={retroChannel} />
+        <IdeaControls idea={idea} retroChannel={retroChannel} IdeaRestClient={IdeaRestClient} />
       )
 
       wrapper.find(".edit.icon").simulate("click")

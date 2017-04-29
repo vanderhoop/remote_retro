@@ -1,6 +1,9 @@
 import React from "react"
+
 import IdeaControls from "./idea_controls"
 import IdeaEditForm from "./idea_edit_form"
+import IdeaRestClient from "../clients/idea_rest_client"
+
 import * as AppPropTypes from "../prop_types"
 import styles from "./css_modules/idea.css"
 
@@ -20,6 +23,7 @@ function Idea(props) {
         <IdeaControls
           idea={idea}
           retroChannel={retroChannel}
+          IdeaRestClient={IdeaRestClient}
         />
       }
       <span className={styles.authorAttribution}>

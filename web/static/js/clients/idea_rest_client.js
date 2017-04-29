@@ -10,4 +10,13 @@ export default class IdeaRestClient {
         if (err) console.error(err)
       })
   }
+
+  static delete(id) {
+    return request
+      .del(`/retros/${window.retroUUID}/ideas/${id}`)
+      .set({ "x-csrf-token": window.csrfToken })
+      .end(err => {
+        if (err) console.error(err)
+      })
+  }
 }
