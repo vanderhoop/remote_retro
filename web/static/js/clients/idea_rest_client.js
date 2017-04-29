@@ -11,6 +11,16 @@ export default class IdeaRestClient {
       })
   }
 
+  static put(idea) {
+    return request
+      .put(`/retros/${window.retroUUID}/ideas/${idea.id}`)
+      .send(idea)
+      .set({ "x-csrf-token": window.csrfToken })
+      .end(err => {
+        if (err) console.error(err)
+      })
+  }
+
   static delete(id) {
     return request
       .del(`/retros/${window.retroUUID}/ideas/${id}`)

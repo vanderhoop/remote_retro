@@ -48,4 +48,21 @@ describe("IdeaRestClient", () => {
       mockRestServer.clearRoutes()
     })
   })
+
+  describe(".put", () => {
+    let putSpy
+
+    before(() => {
+      window.retroUUID = "herp"
+      putSpy = spy(request, "put")
+      mockRestServer.put("/retros/herp/ideas/:id", () => ({}))
+    })
+
+    it("fires a PUT request to the idea's REST endpoint", () => {
+      IdeaRestClient.put({ id: 666, category: "happy" })
+      expect(putSpy.calledWith("/retros/herp/ideas/666")).to.equal(true)
+      putSpy.restore()
+      mockRestServer.clearRoutes()
+    })
+  })
 })
