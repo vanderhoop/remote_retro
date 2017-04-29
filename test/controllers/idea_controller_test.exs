@@ -69,6 +69,23 @@ defmodule RemoteRetro.IdeaControllerTest do
     refute Repo.get(Idea, idea.id)
   end
 
+  describe "deletion broadcast" do
+    setup :subscribe_to_retro_channel
+
+    test "the deletion is broadcast to the retro's subscribers", %{conn: conn, retro: retro} do
+      %Idea{id: id} = idea = Repo.insert! %Idea{retro: retro, category: "happy", body: "parole!"}
+
+      topic = "retro:#{retro.id}"
+      delete conn, retro_idea_api_path(conn, :delete, retro.id, idea.id)
+
+      assert_receive %Phoenix.Socket.Broadcast{
+        topic: ^topic,
+        event: "idea_deleted",
+        payload: %{id: ^id}
+      }
+    end
+  end
+
   defp subscribe_to_retro_channel(%{retro: retro}) do
     topic = "retro:#{retro.id}"
     Endpoint.subscribe(topic)

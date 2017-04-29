@@ -39,10 +39,11 @@ defmodule RemoteRetro.IdeaController do
     end
   end
 
-  def delete(conn, %{"id" => id}) do
+  def delete(conn, %{"retro_id" => retro_id, "id" => id}) do
     idea = Repo.get!(Idea, id)
     Repo.delete!(idea)
 
+    Endpoint.broadcast!("retro:#{retro_id}", "idea_deleted", idea)
     send_resp(conn, :no_content, "")
   end
 end

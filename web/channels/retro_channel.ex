@@ -44,13 +44,6 @@ defmodule RemoteRetro.RetroChannel do
     {:noreply, socket}
   end
 
-  def handle_in("delete_idea", id, socket) do
-    idea = Repo.delete!(%Idea{id: id})
-
-    broadcast! socket, "idea_deleted", idea
-    {:noreply, socket}
-  end
-
   def handle_in("proceed_to_next_stage", %{"stage" => "action-item-distribution"}, socket) do
     retro_id = socket.assigns.retro_id
     persist_retro_update!(retro_id, "action-item-distribution")

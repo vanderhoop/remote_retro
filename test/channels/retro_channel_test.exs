@@ -132,18 +132,6 @@ defmodule RemoteRetro.RetroChannelTest do
     end
   end
 
-  describe "pushing a delete event to the socket" do
-    setup [:join_the_retro_channel, :persist_idea_for_retro]
-
-    @tag idea: %Idea{category: "sad", body: "WIP commits on master", author: "Zander"}
-    test "results in a broadcast of the id of the deleted idea to all clients", %{socket: socket, idea: idea} do
-      idea_id = idea.id
-      push(socket, "delete_idea", idea_id)
-
-      assert_broadcast("idea_deleted", %{id: ^idea_id})
-    end
-  end
-
   describe "the emission of a `presence_diff` event" do
     setup [:join_the_retro_channel]
 
