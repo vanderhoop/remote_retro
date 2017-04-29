@@ -51,14 +51,31 @@ defmodule RemoteRetro.IdeaControllerTest do
 
   test "updates and renders chosen resource when data is valid", %{conn: conn, retro: retro} do
     idea = Repo.insert! %Idea{retro: retro, category: "sad", body: "larp!"}
-    conn = put conn, retro_idea_api_path(conn, :update, retro.id, idea), idea: @valid_attrs
+    conn = put conn, retro_idea_api_path(conn, :update, retro.id, idea), @valid_attrs
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Idea, @valid_attrs)
   end
 
+  describe "update broadcast" do
+    setup :subscribe_to_retro_channel
+
+    test "the update is broadcast to the retro's subscribers", %{conn: conn, retro: retro} do
+      %Idea{id: id} = Repo.insert! %Idea{retro: retro, category: "happy", body: "parole!"}
+
+      topic = "retro:#{retro.id}"
+      put conn, retro_idea_api_path(conn, :update, retro.id, id), @valid_attrs
+
+      assert_receive %Phoenix.Socket.Broadcast{
+        topic: ^topic,
+        event: "idea_updated",
+        payload: %{id: ^id}
+      }
+    end
+  end
+
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn, retro: retro} do
     idea = Repo.insert! %Idea{retro: retro, category: "confused", body: "OffTheChain.js?"}
-    conn = put conn, retro_idea_api_path(conn, :update, retro.id, idea), idea: @invalid_attrs
+    conn = put conn, retro_idea_api_path(conn, :update, retro.id, idea), @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
 

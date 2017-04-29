@@ -144,7 +144,7 @@ describe("<RemoteRetro>", () => {
       })
     })
 
-    describe("on `idea_edited`", () => {
+    describe("on `idea_updated`", () => {
       let ideas
       let editedIdea
 
@@ -156,7 +156,7 @@ describe("<RemoteRetro>", () => {
         ]
 
         wrapper.setState({ ideas })
-        retroChannel.trigger("idea_edited", { id: 2, body: "i like TEENAGE MUTANT NINJA TURTLES" })
+        retroChannel.trigger("idea_updated", { id: 2, body: "i like TEENAGE MUTANT NINJA TURTLES" })
         editedIdea = wrapper.state("ideas").find(idea => (idea.id === 2))
       })
 

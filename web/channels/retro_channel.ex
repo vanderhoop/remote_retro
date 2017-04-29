@@ -1,7 +1,7 @@
 defmodule RemoteRetro.RetroChannel do
   use RemoteRetro.Web, :channel
 
-  alias RemoteRetro.{Presence, PresenceUtils, Idea, Emails, Mailer, Retro}
+  alias RemoteRetro.{Presence, PresenceUtils, Emails, Mailer, Retro}
   alias Phoenix.Socket
 
   def join("retro:" <> retro_id, _, socket) do
@@ -31,16 +31,6 @@ defmodule RemoteRetro.RetroChannel do
 
   def handle_in("idea_live_edit", %{"id" => id, "liveEditText" => live_edit_text}, socket) do
     broadcast! socket, "idea_live_edit", %{"id" => id, "liveEditText" => live_edit_text}
-    {:noreply, socket}
-  end
-
-  def handle_in("idea_edited", %{"id" => id, "body" => body}, socket) do
-    idea =
-      Repo.get(Idea, id)
-      |> Idea.changeset(%{body: body})
-      |> Repo.update!
-
-    broadcast! socket, "idea_edited", idea
     {:noreply, socket}
   end
 

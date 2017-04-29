@@ -25,12 +25,13 @@ defmodule RemoteRetro.IdeaController do
     render(conn, "show.json", idea: idea)
   end
 
-  def update(conn, %{"id" => id, "idea" => idea_params}) do
+  def update(conn, %{"id" => id} = idea_params) do
     idea = Repo.get!(Idea, id)
     changeset = Idea.changeset(idea, idea_params)
 
     case Repo.update(changeset) do
       {:ok, idea} ->
+        Endpoint.broadcast!("retro:#{idea.retro_id}", "idea_updated", idea)
         render(conn, "show.json", idea: idea)
       {:error, changeset} ->
         conn

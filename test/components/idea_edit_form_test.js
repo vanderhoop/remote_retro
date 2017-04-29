@@ -3,11 +3,12 @@ import { shallow, mount } from "enzyme"
 import sinon from "sinon"
 
 import IdeaEditForm from "../../web/static/js/components/idea_edit_form"
+import IdeaRestClient from "../../web/static/js/clients/idea_rest_client"
 
 describe("<IdeaEditForm />", () => {
   const idea = { id: 999, category: "sad", body: "redundant tests", author: "Trizzle" }
   const mockRetroChannel = { on: () => {}, push: () => {} }
-  const defaultProps = { idea, retroChannel: mockRetroChannel }
+  const defaultProps = { idea, IdeaRestClient, retroChannel: mockRetroChannel }
 
   describe("on initial render", () => {
     it("is pre-populated with the given idea's body text", () => {
@@ -42,17 +43,18 @@ describe("<IdeaEditForm />", () => {
   })
 
   describe("on submitting the form", () => {
-    it("pushes an `idea_edited` event to the given retroChannel", () => {
-      const retroChannel = { on: () => {}, push: sinon.spy() }
+    let putSpy
 
-      const wrapper = mount(<IdeaEditForm {...defaultProps} retroChannel={retroChannel} />)
-      const saveButton = wrapper.findWhere(element => (element.text() === "Save"))
+    before(() => {
+      putSpy = sinon.stub(IdeaRestClient, "put")
+      const wrapper = mount(<IdeaEditForm {...defaultProps} />)
 
-      saveButton.simulate("submit")
+      wrapper.simulate("submit")
+    })
 
-      expect(
-        retroChannel.push.calledWith("idea_edited", { id: idea.id, body: idea.body })
-      ).to.equal(true)
+    it("fires a PUT request to the idea's REST endpoint", () => {
+      expect(putSpy.calledWith({ id: idea.id, body: idea.body })).to.equal(true)
+      putSpy.restore()
     })
   })
 

@@ -63,7 +63,7 @@ class RemoteRetro extends Component {
       this.setState({ ideas: newIdeas })
     })
 
-    retroChannel.on("idea_edited", editedIdea => {
+    retroChannel.on("idea_updated", editedIdea => {
       const updatedIdea = { ...editedIdea, editing: false, liveEditText: null }
       const newIdeas = updateIdeas(this.state.ideas, editedIdea.id, updatedIdea)
       this.setState({ ideas: newIdeas })

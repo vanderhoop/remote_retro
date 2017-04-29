@@ -36,7 +36,7 @@ function Idea(props) {
   return (
     <li className={classes} title={idea.body} key={idea.id}>
       { idea.editing && isFacilitator ?
-        <IdeaEditForm idea={idea} retroChannel={retroChannel} />
+        <IdeaEditForm idea={idea} retroChannel={retroChannel} IdeaRestClient={IdeaRestClient} />
         : readOnlyIdea
       }
     </li>

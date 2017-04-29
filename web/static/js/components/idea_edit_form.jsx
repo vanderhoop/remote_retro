@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+
 import * as AppPropTypes from "../prop_types"
 
 class IdeaEditForm extends Component {
@@ -24,9 +25,9 @@ class IdeaEditForm extends Component {
 
   onSubmit(event) {
     event.preventDefault()
-    const { idea, retroChannel } = this.props
+    const { idea, IdeaRestClient } = this.props
     const { ideaBody } = this.state
-    retroChannel.push("idea_edited", { id: idea.id, body: ideaBody })
+    IdeaRestClient.put({ id: idea.id, body: ideaBody })
   }
 
   render() {
@@ -55,6 +56,7 @@ class IdeaEditForm extends Component {
 IdeaEditForm.propTypes = {
   idea: AppPropTypes.idea.isRequired,
   retroChannel: AppPropTypes.retroChannel.isRequired,
+  IdeaRestClient: React.PropTypes.func.isRequired,
 }
 
 export default IdeaEditForm
