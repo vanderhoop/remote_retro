@@ -6,7 +6,6 @@ import StageProgressionButton from "../../web/static/js/components/stage_progres
 import RetroRestClient from "../../web/static/js/clients/retro_rest_client"
 
 describe("StageProgressionButton", () => {
-  const mockRetroChannel = { on: () => {}, push: () => {} }
   const mockStageProgressionConfigs = {
     stageUno: {
       confirmationMessage: "Are you sure?",
@@ -27,7 +26,6 @@ describe("StageProgressionButton", () => {
   }
 
   const defaultProps = {
-    retroChannel: mockRetroChannel,
     RetroRestClient,
     stage: "stageUno",
     stageProgressionConfigs: mockStageProgressionConfigs,
@@ -50,16 +48,23 @@ describe("StageProgressionButton", () => {
   })
 
   context("onClick", () => {
+    let httpStub
+
+    beforeEach(() => {
+      httpStub = sinon.stub(RetroRestClient, "put")
+    })
+
+    afterEach(() => {
+      httpStub.restore()
+    })
+
     context("when the stage progression config requires confirmation", () => {
       let stageProgressionButton
-      let retroChannel
       let confirmStub
 
       beforeEach(() => {
-        retroChannel = { on: () => {}, push: sinon.spy() }
-
         stageProgressionButton = mount(
-          <StageProgressionButton {...defaultProps} stage="stageUno" retroChannel={retroChannel} />
+          <StageProgressionButton {...defaultProps} stage="stageUno" />
         )
       })
 
@@ -80,24 +85,20 @@ describe("StageProgressionButton", () => {
           confirmStub.restore()
         })
 
-        it("pushes `proceed_to_next_stage` to the retroChannel, passing the next stage", () => {
+        it("fires a PUT request to the retro's REST endpoint", () => {
           confirmStub.returns(true)
           stageProgressionButton.simulate("click")
-
-          expect(
-            retroChannel.push.calledWith("proceed_to_next_stage", { stage: "stageDos" })
-          ).to.equal(true)
+          expect(httpStub.calledWith({ stage: "stageDos" })).to.equal(true)
+          httpStub.restore()
         })
       })
 
       context("when the user does not confirm", () => {
-        it("does not push an event to the retro channel", () => {
+        it("does not fire a PUT request to the retro's REST endpoint", () => {
           confirmStub.returns(false)
           stageProgressionButton.simulate("click")
-
-          expect(
-            retroChannel.push.called
-          ).to.equal(false)
+          expect(httpStub.called).to.equal(false)
+          httpStub.restore()
         })
       })
     })
@@ -105,13 +106,11 @@ describe("StageProgressionButton", () => {
     context("when the matching stage config lacks a `confirmationMessage`", () => {
       let confirmSpy
       let stageProgressionButton
-      let retroChannel
 
       beforeEach(() => {
         confirmSpy = sinon.spy(global, "confirm")
-        retroChannel = { on: () => {}, push: sinon.spy() }
 
-        const props = { ...defaultProps, retroChannel, stage: "stageDos" }
+        const props = { ...defaultProps, stage: "stageDos" }
         stageProgressionButton = mount(<StageProgressionButton {...props} />)
 
         stageProgressionButton.simulate("click")
@@ -120,12 +119,6 @@ describe("StageProgressionButton", () => {
       it("does not invoke a javascript confirmation", () => {
         expect(confirmSpy.called).to.equal(false)
         confirmSpy.restore()
-      })
-
-      it("pushes `proceed_to_next_stage` to the retroChannel, passing the next stage", () => {
-        expect(
-          retroChannel.push.calledWith("proceed_to_next_stage", { stage: "stageTres" })
-        ).to.equal(true)
       })
     })
   })

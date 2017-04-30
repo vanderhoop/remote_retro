@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import * as AppPropTypes from "../prop_types"
 
 class StageProgressionButton extends Component {
   constructor(props) {
@@ -8,12 +7,12 @@ class StageProgressionButton extends Component {
   }
 
   handleStageProgression() {
-    const { stage, retroChannel, stageProgressionConfigs } = this.props
+    const { stage, stageProgressionConfigs, RetroRestClient } = this.props
     const stageConfig = stageProgressionConfigs[stage]
     const noConfirmationNecessary = !stageConfig.confirmationMessage
 
     if (noConfirmationNecessary || confirm(stageConfig.confirmationMessage)) {
-      retroChannel.push("proceed_to_next_stage", { stage: stageConfig.nextStage })
+      RetroRestClient.put({ stage: stageConfig.nextStage })
     }
   }
 
@@ -33,7 +32,6 @@ class StageProgressionButton extends Component {
 }
 
 StageProgressionButton.propTypes = {
-  retroChannel: AppPropTypes.retroChannel.isRequired,
   RetroRestClient: React.PropTypes.func.isRequired,
   stage: React.PropTypes.string.isRequired,
   stageProgressionConfigs: React.PropTypes.object.isRequired,
