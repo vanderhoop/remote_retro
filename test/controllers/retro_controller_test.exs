@@ -1,6 +1,7 @@
 defmodule RemoteRetro.RetroControllerTest do
-  use RemoteRetro.ConnCase, async: true
-  alias RemoteRetro.{User, Retro, Participation}
+  use RemoteRetro.ConnCase, async: false
+  use Bamboo.Test, shared: true
+  alias RemoteRetro.{User, Retro, Participation, Endpoint}
 
   @valid_attrs %{stage: "action-items"}
   @invalid_attrs %{stage: "paintball"}
@@ -51,10 +52,32 @@ defmodule RemoteRetro.RetroControllerTest do
       assert Repo.get_by(Retro, @valid_attrs)
     end
 
+    test "the retro update is broadcasted to subscribers", %{conn: conn} do
+      retro = Repo.insert! %Retro{}
+      topic = "retro:#{retro.id}"
+      Endpoint.subscribe(topic)
+
+      put conn, retro_path(conn, :update, retro.id), @valid_attrs
+      assert_receive %Phoenix.Socket.Broadcast{
+        topic: ^topic,
+        event: "proceed_to_next_stage",
+        payload: @valid_attrs
+      }
+
+      Endpoint.unsubscribe(topic)
+    end
+
     test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
       retro = Repo.insert! %Retro{}
       conn = put conn, retro_path(conn, :update, retro.id), @invalid_attrs
       assert json_response(conn, 422)["errors"] != %{}
+    end
+
+    test "emails an action-item breakdown when the stage is 'action-item-distribution'", %{conn: conn} do
+      attrs = %{@valid_attrs | stage: "action-item-distribution" }
+      retro = Repo.insert! %Retro{}
+      put conn, retro_path(conn, :update, retro.id), attrs
+      assert_delivered_with(subject: "Action items from Retro")
     end
   end
 

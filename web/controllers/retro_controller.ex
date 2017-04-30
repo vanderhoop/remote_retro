@@ -1,6 +1,6 @@
 defmodule RemoteRetro.RetroController do
   use RemoteRetro.Web, :controller
-  alias RemoteRetro.{Retro, Participation, User}
+  alias RemoteRetro.{Retro, Participation, User, Endpoint, Emails, Mailer}
   alias Phoenix.Token
 
   def show(conn, params) do
@@ -29,12 +29,20 @@ defmodule RemoteRetro.RetroController do
     changeset = Retro.changeset(retro, %{stage: stage})
 
     case Repo.update(changeset) do
+      {:ok, %{stage: "action-item-distribution"}} ->
+        Emails.action_items_email(id) |> Mailer.deliver_now
+        broadcast_and_render(conn, retro)
       {:ok, retro} ->
-        render(conn, "show.json", retro: retro)
+        broadcast_and_render(conn, retro)
       {:error, changeset} ->
         conn
         |> put_status(:unprocessable_entity)
         |> render(RemoteRetro.ChangesetView, "error.json", changeset: changeset)
     end
+  end
+
+  defp broadcast_and_render(conn, retro) do
+    Endpoint.broadcast! "retro:#{retro.id}", "proceed_to_next_stage", retro
+    render(conn, "show.json", retro: retro)
   end
 end

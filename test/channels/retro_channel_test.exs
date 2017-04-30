@@ -1,8 +1,7 @@
 defmodule RemoteRetro.RetroChannelTest do
-  use RemoteRetro.ChannelCase, async: false
-  use Bamboo.Test, shared: true
+  use RemoteRetro.ChannelCase, async: true
 
-  alias RemoteRetro.{RetroChannel, Repo, Presence, Retro}
+  alias RemoteRetro.{RetroChannel, Presence, Retro}
 
   @mock_user Application.get_env(:remote_retro, :mock_user)
 
@@ -42,44 +41,6 @@ defmodule RemoteRetro.RetroChannelTest do
       assert presence_object["given_name"] == @mock_user["given_name"]
       assert presence_object["family_name"] == @mock_user["family_name"]
       assert %{online_at: _} = presence_object
-    end
-  end
-
-  describe "pushing `proceed_to_next_stage` with a stage of 'action-item-distribution'" do
-    setup [:join_the_retro_channel]
-
-    test "triggers an email containing the retro action items", %{socket: socket} do
-      push(socket, "proceed_to_next_stage", %{stage: "action-item-distribution"})
-
-      assert_delivered_with(subject: "Action items from Retro")
-    end
-
-    test "broadcasts the same event to connected clients, along with stage", %{socket: socket} do
-      push(socket, "proceed_to_next_stage", %{stage: "action-item-distribution"})
-
-      assert_broadcast("proceed_to_next_stage", %{"stage" => "action-item-distribution"})
-    end
-  end
-
-  describe "pushing a `proceed_to_next_stage` event" do
-    setup [:join_the_retro_channel]
-    test "broadcasts the same event to connected clients, along with stage", %{socket: socket} do
-      push(socket, "proceed_to_next_stage", %{stage: "action-items"})
-
-      assert_broadcast("proceed_to_next_stage", %{"stage" => "action-items"})
-    end
-
-    test "updates the retro stage to the value from the pushed event", %{socket: socket, retro: retro} do
-      push(socket, "proceed_to_next_stage", %{stage: "action-items"})
-
-      assert_broadcast("proceed_to_next_stage", %{"stage" => "action-items"})
-      persisted_stage = Repo.get(Retro, retro.id).stage
-      assert persisted_stage == "action-items"
-    end
-
-    test "doesn't send an email containing the retro action items", %{socket: socket} do
-      push(socket, "proceed_to_next_stage", %{stage: "action-items"})
-      assert_no_emails_delivered()
     end
   end
 

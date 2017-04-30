@@ -1,7 +1,7 @@
 defmodule RemoteRetro.RetroChannel do
   use RemoteRetro.Web, :channel
 
-  alias RemoteRetro.{Presence, PresenceUtils, Emails, Mailer, Retro}
+  alias RemoteRetro.{Presence, PresenceUtils, Retro}
   alias Phoenix.Socket
 
   def join("retro:" <> retro_id, _, socket) do
@@ -34,33 +34,11 @@ defmodule RemoteRetro.RetroChannel do
     {:noreply, socket}
   end
 
-  def handle_in("proceed_to_next_stage", %{"stage" => "action-item-distribution"}, socket) do
-    retro_id = socket.assigns.retro_id
-    persist_retro_update!(retro_id, "action-item-distribution")
-    Emails.action_items_email(retro_id) |> Mailer.deliver_now
-
-    broadcast! socket, "proceed_to_next_stage", %{"stage" => "action-item-distribution"}
-    {:noreply, socket}
-  end
-
-  def handle_in("proceed_to_next_stage", %{"stage" => stage}, socket) do
-    persist_retro_update!(socket.assigns.retro_id, stage)
-
-    broadcast! socket, "proceed_to_next_stage", %{"stage" => stage}
-    {:noreply, socket}
-  end
-
   intercept ["presence_diff"]
   def handle_out("presence_diff", _msg, socket) do
     new_state = Presence.list(socket) |> PresenceUtils.give_facilitator_role_to_longest_tenured
 
     push socket, "presence_state", new_state
     {:noreply, socket}
-  end
-
-  defp persist_retro_update!(retro_id, stage) do
-    Repo.get(Retro, retro_id)
-    |> Retro.changeset(%{stage: stage})
-    |> Repo.update!
   end
 end
