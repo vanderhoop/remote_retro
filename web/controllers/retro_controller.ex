@@ -23,4 +23,18 @@ defmodule RemoteRetro.RetroController do
     {:ok, retro} = Repo.insert(%Retro{})
     redirect conn, to: "/retros/" <> retro.id
   end
+
+  def update(conn, %{"id" => id, "stage" => stage}) do
+    retro = Repo.get!(Retro, id)
+    changeset = Retro.changeset(retro, %{stage: stage})
+
+    case Repo.update(changeset) do
+      {:ok, retro} ->
+        render(conn, "show.json", retro: retro)
+      {:error, changeset} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> render(RemoteRetro.ChangesetView, "error.json", changeset: changeset)
+    end
+  end
 end

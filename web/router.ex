@@ -32,7 +32,7 @@ defmodule RemoteRetro.Router do
   scope "/retros", RemoteRetro do
     pipe_through [:api, :browser, :authentication_required]
 
-    resources "/", RetroController, only: [:create, :show] do
+    resources "/", RetroController, only: [:create, :show, :update] do
       resources "/ideas", IdeaController, as: :idea_api
     end
   end

@@ -1,6 +1,9 @@
 defmodule RemoteRetro.RetroControllerTest do
   use RemoteRetro.ConnCase, async: true
-  alias RemoteRetro.{User, Participation}
+  alias RemoteRetro.{User, Retro, Participation}
+
+  @valid_attrs %{stage: "action-items"}
+  @invalid_attrs %{stage: "paintball"}
 
   describe "authenticated requests" do
     setup :authenticate_connection
@@ -39,6 +42,19 @@ defmodule RemoteRetro.RetroControllerTest do
       participations = Repo.all(query)
 
       refute length(participations) > 1
+    end
+
+    test "updates and renders chosen resource when data is valid", %{conn: conn} do
+      retro = Repo.insert! %Retro{}
+      conn = put conn, retro_path(conn, :update, retro.id), @valid_attrs
+      assert json_response(conn, 200)["data"]["id"]
+      assert Repo.get_by(Retro, @valid_attrs)
+    end
+
+    test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
+      retro = Repo.insert! %Retro{}
+      conn = put conn, retro_path(conn, :update, retro.id), @invalid_attrs
+      assert json_response(conn, 422)["errors"] != %{}
     end
   end
 
