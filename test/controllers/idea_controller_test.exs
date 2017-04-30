@@ -1,7 +1,7 @@
 defmodule RemoteRetro.IdeaControllerTest do
   use RemoteRetro.ConnCase
 
-  alias RemoteRetro.{Idea, Retro, Endpoint}
+  alias RemoteRetro.{Idea, Retro}
 
   @valid_attrs %{body: "Collaboration!", category: "happy", author: "Tim"}
   @invalid_attrs %{name: "derp"}
@@ -101,12 +101,5 @@ defmodule RemoteRetro.IdeaControllerTest do
         payload: %{id: ^id}
       }
     end
-  end
-
-  defp subscribe_to_retro_channel(%{retro: retro}) do
-    topic = "retro:#{retro.id}"
-    Endpoint.subscribe(topic)
-    on_exit fn -> Endpoint.unsubscribe(topic) end
-    :ok
   end
 end
