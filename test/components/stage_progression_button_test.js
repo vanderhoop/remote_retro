@@ -3,6 +3,7 @@ import { mount } from "enzyme"
 import sinon from "sinon"
 
 import StageProgressionButton from "../../web/static/js/components/stage_progression_button"
+import RetroRestClient from "../../web/static/js/clients/retro_rest_client"
 
 describe("StageProgressionButton", () => {
   const mockRetroChannel = { on: () => {}, push: () => {} }
@@ -27,6 +28,7 @@ describe("StageProgressionButton", () => {
 
   const defaultProps = {
     retroChannel: mockRetroChannel,
+    RetroRestClient,
     stage: "stageUno",
     stageProgressionConfigs: mockStageProgressionConfigs,
   }
@@ -101,37 +103,29 @@ describe("StageProgressionButton", () => {
     })
 
     context("when the matching stage config lacks a `confirmationMessage`", () => {
+      let confirmSpy
+      let stageProgressionButton
+      let retroChannel
+
       beforeEach(() => {
-        stageProgressionButton = mount(
-          <StageProgressionButton {...defaultProps} stage="stageDos" />
-        )
+        confirmSpy = sinon.spy(global, "confirm")
+        retroChannel = { on: () => {}, push: sinon.spy() }
+
+        const props = { ...defaultProps, retroChannel, stage: "stageDos" }
+        stageProgressionButton = mount(<StageProgressionButton {...props} />)
+
+        stageProgressionButton.simulate("click")
       })
 
-      context("onClick", () => {
-        let confirmSpy
-        let stageProgressionButton
-        let retroChannel
+      it("does not invoke a javascript confirmation", () => {
+        expect(confirmSpy.called).to.equal(false)
+        confirmSpy.restore()
+      })
 
-        beforeEach(() => {
-          confirmSpy = sinon.spy(global, "confirm")
-          retroChannel = { on: () => {}, push: sinon.spy() }
-
-          const props = { ...defaultProps, retroChannel, stage: "stageDos" }
-          stageProgressionButton = mount(<StageProgressionButton {...props} />)
-
-          stageProgressionButton.simulate("click")
-        })
-
-        it("does not invoke a javascript confirmation", () => {
-          expect(confirmSpy.called).to.equal(false)
-          confirmSpy.restore()
-        })
-
-        it("pushes `proceed_to_next_stage` to the retroChannel, passing the next stage", () => {
-          expect(
-            retroChannel.push.calledWith("proceed_to_next_stage", { stage: "stageTres" })
-          ).to.equal(true)
-        })
+      it("pushes `proceed_to_next_stage` to the retroChannel, passing the next stage", () => {
+        expect(
+          retroChannel.push.calledWith("proceed_to_next_stage", { stage: "stageTres" })
+        ).to.equal(true)
       })
     })
   })

@@ -7,6 +7,7 @@ import StageProgressionButton from "./stage_progression_button"
 import stageProgressionConfigs from "../configs/stage_progression_configs"
 
 import DoorChime from "./door_chime"
+import RetroRestClient from "../clients/retro_rest_client"
 
 import * as AppPropTypes from "../prop_types"
 import styles from "./css_modules/room.css"
@@ -45,11 +46,12 @@ function Room(props) {
         <div className="three wide right aligned column">
           {
             isFacilitator &&
-            <StageProgressionButton
-              stageProgressionConfigs={stageProgressionConfigs}
-              retroChannel={retroChannel}
-              stage={stage}
-            />
+              <StageProgressionButton
+                retroChannel={retroChannel}
+                RetroRestClient={RetroRestClient}
+                stage={stage}
+                stageProgressionConfigs={stageProgressionConfigs}
+              />
           }
         </div>
         <p className={styles.poweredBy}>

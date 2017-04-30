@@ -34,6 +34,7 @@ class StageProgressionButton extends Component {
 
 StageProgressionButton.propTypes = {
   retroChannel: AppPropTypes.retroChannel.isRequired,
+  RetroRestClient: React.PropTypes.func.isRequired,
   stage: React.PropTypes.string.isRequired,
   stageProgressionConfigs: React.PropTypes.object.isRequired,
 }
