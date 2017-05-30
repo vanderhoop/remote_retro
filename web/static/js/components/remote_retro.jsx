@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from "react"
+import { connect } from "react-redux"
+import { addUsers } from "../actions/user"
 import { Presence } from "phoenix"
 import update from "immutability-helper"
 
@@ -32,13 +34,16 @@ class RemoteRetro extends Component {
   }
 
   componentWillMount() {
-    const { retroChannel } = this.props
+    const { retroChannel, addUsers } = this.props
 
     retroChannel.join()
       .receive("ok", retroState => { this.setState(retroState) })
       .receive("error", error => console.error(error))
 
-    retroChannel.on("presence_state", presences => this.setState({ presences }))
+    retroChannel.on("presence_state", presences => {
+      const users = Presence.list(presences, (_username, presence) => (presence.user))
+      addUsers(users)
+    })
 
     retroChannel.on("new_idea_received", newIdea => {
       this.setState({ ideas: [...this.state.ideas, newIdea] })
@@ -97,10 +102,9 @@ class RemoteRetro extends Component {
   }
 
   render() {
-    const { userToken, retroChannel } = this.props
+    const { users, userToken, retroChannel } = this.props
     const { presences, ideas, stage } = this.state
 
-    const users = Presence.list(presences, (_username, presence) => (presence.user))
     const currentPresence = presences[userToken]
 
     return (
@@ -114,6 +118,19 @@ class RemoteRetro extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  users: state.user
+})
+
+const mapDispatchToProps = dispatch => ({
+  addUsers: users => dispatch(addUsers(users))
+})
+
+RemoteRetro = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RemoteRetro)
 
 RemoteRetro.propTypes = {
   retroChannel: AppPropTypes.retroChannel.isRequired,
