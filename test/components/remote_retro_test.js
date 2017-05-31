@@ -2,7 +2,7 @@ import React from "react"
 import { shallow } from "enzyme"
 import { spy, useFakeTimers } from "sinon"
 
-import RemoteRetro from "../../web/static/js/components/remote_retro"
+import { RemoteRetro } from "../../web/static/js/components/remote_retro"
 import RetroChannel from "../../web/static/js/services/retro_channel"
 
 describe("<RemoteRetro>", () => {
@@ -12,7 +12,7 @@ describe("<RemoteRetro>", () => {
 
     beforeEach(() => {
       retroChannel = RetroChannel.configure({})
-      wrapper = shallow(<RemoteRetro userToken="userToken" retroChannel={retroChannel} />)
+      wrapper = shallow(<RemoteRetro users={[]} userToken="userToken" retroChannel={retroChannel} />)
     })
 
     describe("on `new_idea_received`", () => {
