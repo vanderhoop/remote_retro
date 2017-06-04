@@ -9,10 +9,17 @@ new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
   compress: true,
+  stats: {
+    assets: true,
+    chunks: false,
+    errors: true,
+    errorDetails: true,
+  },
   headers: { "Access-Control-Allow-Origin": "*" },
 }).listen(port, "0.0.0.0", (err, result) => {
   if (err) console.error(err)
-  console.log(`[info] Running webpack-dev-server using http://localhost:${port}\n`)
+  console.log(`[info] Running webpack-dev-server using http://localhost:${port}`)
+  console.log(`[info] Webpack compiling assets...\n`)
 })
 
 // Exit on end of STDIN
