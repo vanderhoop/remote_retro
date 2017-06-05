@@ -8,6 +8,9 @@ config :remote_retro, RemoteRetro.Endpoint,
 
 config :remote_retro, :sql_sandbox, true
 
+{:ok, file} = File.open("browser_logs.log", [:write])
+config :wallaby, :js_logger, file
+
 config :wallaby, screenshot_on_failure: true
 config :bamboo, :refute_timeout, 10
 

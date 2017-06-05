@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 const webpack = require("webpack")
 const WebpackDevServer = require("webpack-dev-server")
 
