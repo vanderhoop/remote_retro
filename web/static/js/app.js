@@ -11,6 +11,8 @@ import RetroChannel from "./services/retro_channel"
 import rootReducer from "./reducers"
 import actions from "./actions"
 
+import enableHotCssModuleUpdates from "./dev/enable_hot_css_module_updates"
+
 const { userToken, retroUUID } = window
 
 const store = createStore(
@@ -40,8 +42,11 @@ retroChannel.join()
     renderWithHotReload(RemoteRetro)
 
     if (module.hot) {
+      enableHotCssModuleUpdates()
+
       module.hot.accept("./components/remote_retro", () => {
         renderWithHotReload(RemoteRetro)
       })
     }
   })
+}
