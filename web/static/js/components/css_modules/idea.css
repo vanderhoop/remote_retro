@@ -17,6 +17,17 @@ li {
 }
 
 .highlighted {
+  position: relative;
   background-color: #CCE2FE;
   border-bottom: 1px solid #CCE2FE;
+}
+
+.highlighted:before {
+  position: absolute;
+  left: -2.5%;
+  content: "";
+  width: 5%;
+  background-color: #CCE2FE;
+  height: 105%;
+  top: 0.5%;
 }
