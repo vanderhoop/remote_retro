@@ -55,10 +55,7 @@ class ShareRetroLinkModal extends Component {
           </div>
           <div className="ui center aligned header">
             <p>
-              <i className="big icons">
-                <i className="user icon" />
-                <i className="corner announcement icon" />
-              </i>
+              <i className={`big external share icon ${styles.shareIcon}`} />
             </p>
             Share the unique retro link below with teammates!
           </div>
