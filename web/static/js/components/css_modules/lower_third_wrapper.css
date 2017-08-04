@@ -1,0 +1,10 @@
+.appear {
+  transform: translateY(130%);
+}
+
+.appear.appear-active {
+  transition: transform 400ms ease;
+  transition-delay: 300ms;
+  transform: translateY(0);
+}
+
