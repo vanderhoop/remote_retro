@@ -1,10 +1,19 @@
-.appear {
+:global(.translateY-appear) {
   transform: translateY(130%);
 }
 
-.appear.appear-active {
+:global(.translateY-appear.translateY-appear-active) {
   transition: transform 400ms ease;
   transition-delay: 300ms;
   transform: translateY(0);
 }
 
+:global(.translateY-leave) {
+  transform: translateY(0);
+}
+
+:global(.translateY-leave.translateY-leave-active) {
+  transition: transform 400ms ease;
+  transition-delay: 300ms;
+  transform: translateY(130%);
+}
