@@ -20,3 +20,7 @@ li {
   background-color: #CCE2FE;
   border-bottom: 1px solid #CCE2FE;
 }
+
+.idea-wrapper {
+  overflow: auto;
+}
