@@ -1,3 +1,5 @@
+// const updateIdea = state
+
 const ideas = (state = [], action) => {
   switch (action.type) {
     case "SET_INITIAL_STATE":

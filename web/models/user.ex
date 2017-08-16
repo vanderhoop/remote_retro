@@ -25,6 +25,7 @@ defmodule RemoteRetro.User do
     field :last_login, Ecto.DateTime
 
     has_many :participations, RemoteRetro.Participation
+    has_many :votes, RemoteRetro.Vote
 
     timestamps(type: :utc_datetime)
   end

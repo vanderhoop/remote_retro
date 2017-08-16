@@ -47,8 +47,9 @@ const applyListenerCallbacks = (retroChannel, store, actions) => {
     actions.deleteIdea(deletedIdea.id)
   })
 
-  retroChannel.on("vote_submitted", votedOnIdea => {
-    actions.updateIdea(votedOnIdea.id, { vote_count: votedOnIdea.vote_count })
+  retroChannel.on("vote_submitted", ideaId => {
+    // actions.updateIdea(votedOnIdea.id, { vote_count: votedOnIdea.vote_count })
+    console.log("in vote submitted", ideaId)
   })
 
   retroChannel.on("idea_highlighted", highlightedIdea => {

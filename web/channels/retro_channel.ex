@@ -1,7 +1,7 @@
 defmodule RemoteRetro.RetroChannel do
   use RemoteRetro.Web, :channel
 
-  alias RemoteRetro.{Presence, PresenceUtils, Idea, Emails, Mailer, Retro}
+  alias RemoteRetro.{Presence, PresenceUtils, Idea, Emails, Mailer, Retro, Vote}
 
   def join("retro:" <> retro_id, _, socket) do
     socket = assign(socket, :retro_id, retro_id)
@@ -76,11 +76,16 @@ defmodule RemoteRetro.RetroChannel do
     {:noreply, socket}
   end
 
-  def handle_in("submit_vote", %{"id" => id}, socket) do
-    query = from i in Idea, where: i.id == ^id
-    {_row_count, [updated_idea]} = Repo.update_all(query, [inc: [vote_count: 1]], returning: true)
+  def handle_in("submit_vote", %{"ideaId" => idea_id, "userId" => user_id}, socket) do
+    vote =
+      %Vote{
+        idea_id: idea_id,
+        user_id: user_id
+      }
+      |> Vote.changeset
+      |> Repo.insert!
 
-    broadcast! socket, "vote_submitted", updated_idea
+    broadcast! socket, "vote_submitted", vote
     {:noreply, socket}
   end
 

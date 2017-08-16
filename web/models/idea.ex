@@ -9,6 +9,7 @@ defmodule RemoteRetro.Idea do
 
     belongs_to :retro, RemoteRetro.Retro, type: Ecto.UUID
     belongs_to :user, RemoteRetro.User
+    has_many :vote, RemoteRetro.Vote
 
     timestamps(type: :utc_datetime)
   end

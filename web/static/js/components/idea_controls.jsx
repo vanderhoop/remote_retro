@@ -24,7 +24,11 @@ const IdeaControls = props => {
   function renderIcons() {
     if (stage !== "idea-generation" && category !== "action-item") {
       return (
-        <VoteCounter retroChannel={retroChannel} idea={idea} />
+        <VoteCounter
+          retroChannel={retroChannel}
+          idea={idea}
+          currentUser={currentUser}
+        />
       )
     }
     if (currentUser.is_facilitator) {
