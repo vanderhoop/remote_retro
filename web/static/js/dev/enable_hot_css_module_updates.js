@@ -6,7 +6,6 @@ export default () => {
     document.querySelectorAll("link[href][rel=stylesheet]").forEach(link => {
       const nextStyleHref = link.href.replace(/(\?\d+)?$/, `?${Date.now()}`)
       const newLink = link.cloneNode()
-      console.log(link)
       newLink.href = nextStyleHref
 
       link.parentNode.appendChild(newLink)
