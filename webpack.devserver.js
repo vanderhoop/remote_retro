@@ -8,12 +8,6 @@ new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
   compress: true,
-  stats: {
-    assets: true,
-    chunks: false,
-    errors: true,
-    errorDetails: true,
-  },
   headers: { "Access-Control-Allow-Origin": "*" },
 }).listen(port, "0.0.0.0", (err, result) => {
   if (err) console.error(err)
