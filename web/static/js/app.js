@@ -15,10 +15,23 @@ import enableHotCssModuleUpdates from "./dev/enable_hot_css_module_updates"
 
 const { userToken, retroUUID } = window
 
-const store = createStore(
-  rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
+const configureStore = (rootReducer) => {
+  const store = createStore(
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+
+  if (module.hot) {
+    module.hot.accept('./reducers/index', () => {
+      const nextRootReducer = require('./reducers/index').default
+      store.replaceReducer(nextRootReducer)
+    })
+  }
+
+  return store
+}
+
+const store = configureStore(rootReducer)
 
 const actionz = bindActionCreators({ ...actions }, store.dispatch)
 const retroChannel = RetroChannel.configure({ userToken, retroUUID, store, actions: actionz })
@@ -28,25 +41,22 @@ retroChannel.join()
   .receive("ok", initialState => {
     actionz.setInitialState(initialState)
 
-    const renderWithHotReload = RemoteRetro => {
+    const renderWithHotReload = () => {
+      const RemoteRetro = require("./components/remote_retro").default
+
       render(
         <AppContainer>
-          <Provider store={createStore(rootReducer)}>
-            <RemoteRetro retroChannel={retroChannel} userToken={userToken} />
-          </Provider>
+          <RemoteRetro retroChannel={retroChannel} userToken={userToken} store={store} />
         </AppContainer>,
-        reactRoot
+        document.querySelector('.react-root')
       )
     }
 
-    renderWithHotReload(RemoteRetro)
+    renderWithHotReload()
+    store.subscribe(renderWithHotReload)
 
     if (module.hot) {
+      module.hot.accept("./components/remote_retro", renderWithHotReload)
       enableHotCssModuleUpdates()
-
-      module.hot.accept("./components/remote_retro", () => {
-        renderWithHotReload(RemoteRetro)
-      })
     }
   })
-}
