@@ -5,11 +5,19 @@ import UserListItem from "../../web/static/js/components/user_list_item"
 import AnimatedEllipsis from "../../web/static/js/components/animated_ellipsis"
 
 const defaultUserAttrs = {
+  token: "ABC",
   given_name: "dylan",
   online_at: 803,
   is_facilitator: false,
   is_typing: false,
   picture: "http://some/image.jpg?sz=200",
+}
+
+const currentUser = {}
+const defaultProps = {
+  user: defaultUserAttrs,
+  stage: "voting",
+  currentUser,
 }
 
 describe("UserListItem", () => {
@@ -18,15 +26,28 @@ describe("UserListItem", () => {
 
   describe("when the stage isn't prime directive", () => {
     it("does not display a PrimeDirectiveWelcomeTooltip", () => {
-      const wrapper = shallow(<UserListItem stage="idea-generation" user={defaultUserAttrs} />)
+      const wrapper = shallow(<UserListItem {...defaultProps} stage="idea-generation" />)
       expect(wrapper.text()).not.to.match(/<PrimeDirectiveWelcomeTooltip \/>/)
     })
   })
 
   describe("when the stage is `prime-directive`", () => {
-    it("displays a <PrimeDirectiveWelcomeTooltip />", () => {
-      const wrapper = shallow(<UserListItem stage="prime-directive" user={defaultUserAttrs} />)
-      expect(wrapper.text()).to.match(/<PrimeDirectiveWelcomeTooltip \/>/)
+    describe("when the currentUser's token does not match the given user's token", () => {
+      it("displays a <PrimeDirectiveWelcomeTooltip />", () => {
+        const wrapper = shallow(
+          <UserListItem {...defaultProps} stage="prime-directive" currentUser={{ token: "A" }} />
+        )
+        expect(wrapper.text()).to.not.match(/<PrimeDirectiveWelcomeTooltip \/>/)
+      })
+    })
+
+    describe("when the currentUser's token matches the given user's token", () => {
+      it("displays a <PrimeDirectiveWelcomeTooltip />", () => {
+        const wrapper = shallow(
+          <UserListItem {...defaultProps} stage="prime-directive" currentUser={{ token: "ABC" }} />
+        )
+        expect(wrapper.text()).to.match(/<PrimeDirectiveWelcomeTooltip \/>/)
+      })
     })
   })
 
@@ -34,7 +55,7 @@ describe("UserListItem", () => {
     const nonFacilitator = { ...defaultUserAttrs, is_facilitator: false }
 
     it("renders a list item that does not label the user a facilitator", () => {
-      const wrapper = shallow(<UserListItem stage="voting" user={nonFacilitator} />)
+      const wrapper = shallow(<UserListItem {...defaultProps} user={nonFacilitator} />)
       expect(wrapper.text()).not.to.match(/facilitator/i)
     })
   })
@@ -43,7 +64,7 @@ describe("UserListItem", () => {
     const facilitator = { ...defaultUserAttrs, is_facilitator: true }
 
     it("renders a list item with text labeling the user facilitator", () => {
-      const wrapper = shallow(<UserListItem stage="voting" user={facilitator} />)
+      const wrapper = shallow(<UserListItem {...defaultProps} user={facilitator} />)
       expect(wrapper.text()).to.match(/dylan \(facilitator\)/i)
     })
   })
@@ -52,7 +73,7 @@ describe("UserListItem", () => {
     const user = { ...defaultUserAttrs, is_typing: true }
 
     it("renders the user with an ellipsis animation", () => {
-      const wrapper = shallow(<UserListItem stage="voting" user={user} />)
+      const wrapper = shallow(<UserListItem {...defaultProps} user={user} />)
       expect(wrapper.find(AnimatedEllipsis)).to.have.length(1)
     })
   })
@@ -61,14 +82,14 @@ describe("UserListItem", () => {
     const user = { ...defaultUserAttrs, is_typing: false }
 
     it("does not render the user with an ellipsis animation", () => {
-      const wrapper = shallow(<UserListItem stage="voting" user={user} />)
+      const wrapper = shallow(<UserListItem {...defaultProps} user={user} />)
       expect(wrapper.find("i.circle.icon")).to.have.length(0)
     })
   })
 
   it("changes the user's image url such that its `sz` query attribute's becomes 200", () => {
     user = { ...defaultUserAttrs, picture: "http://some/image.jpg?sz=50" }
-    wrapper = shallow(<UserListItem stage="voting" user={user} />)
+    wrapper = shallow(<UserListItem {...defaultProps} user={user} />)
     const imageSrc = wrapper.find("img.picture").prop("src")
     expect(imageSrc).to.equal("http://some/image.jpg?sz=200")
   })
