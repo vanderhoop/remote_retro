@@ -3,11 +3,11 @@ import UserListItem from "./user_list_item"
 import * as AppPropTypes from "../prop_types"
 import styles from "./css_modules/user_list.css"
 
-const UserList = props => {
-  const usersSortedByArrival = props.users.sort((a, b) => a.online_at - b.online_at)
+const UserList = ({ users, stage }) => {
+  const usersSortedByArrival = users.sort((a, b) => a.online_at - b.online_at)
 
   const listItems = usersSortedByArrival.map(user =>
-    <UserListItem key={user.online_at} user={user} stage={props.stage} />
+    <UserListItem key={user.online_at} user={user} stage={stage} />
   )
 
   return (
