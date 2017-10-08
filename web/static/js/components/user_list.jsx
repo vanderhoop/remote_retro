@@ -21,6 +21,7 @@ const UserList = props => {
 
 UserList.propTypes = {
   users: AppPropTypes.users.isRequired,
+  stage: AppPropTypes.stage.isRequired,
 }
 
 export default UserList
