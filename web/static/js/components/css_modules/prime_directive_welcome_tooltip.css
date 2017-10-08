@@ -1,0 +1,6 @@
+:global(.pointing.label).prime-directive-welcome-prompt {
+  text-align: justify;
+  white-space: normal;
+  width: 14.5rem;
+  margin-right: 0;
+}

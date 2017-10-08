@@ -16,12 +16,12 @@ describe("passed an array of users", () => {
   }]
 
   it("is renders a list item for each user", () => {
-    const wrapper = shallow(<UserList users={users} />)
+    const wrapper = shallow(<UserList stage="voting" users={users} />)
     expect(wrapper.find(UserListItem)).to.have.length(2)
   })
 
   it("sorts the users by their arrival in the room, ascending", () => {
-    const wrapper = mount(<UserList users={users} />)
+    const wrapper = mount(<UserList stage="voting" users={users} />)
     expect(wrapper.text()).to.match(/zandertreezy/i)
   })
 })

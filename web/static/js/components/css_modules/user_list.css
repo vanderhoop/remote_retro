@@ -10,5 +10,6 @@
   /* user list scrolls horizontally */
   width: 100%;
   white-space: nowrap;
+  overflow-y: visible;
   overflow-x: scroll;
 }
