@@ -37,7 +37,7 @@ export class RemoteRetro extends Component {
           />
           <Alert config={alert} />
           <ShareRetroLinkModal retroCreationTimestamp={insertedAt} />
-          <DoorChime {...this.props} />
+          <DoorChime users={users} />
         </div>
       </Provider>
     )
@@ -46,8 +46,8 @@ export class RemoteRetro extends Component {
 
 RemoteRetro.propTypes = {
   retroChannel: AppPropTypes.retroChannel.isRequired,
+  store: PropTypes.object.isRequired,
   userToken: PropTypes.string.isRequired,
-  stage: AppPropTypes.stage.isRequired,
   insertedAt: PropTypes.string,
   alert: PropTypes.object,
 }

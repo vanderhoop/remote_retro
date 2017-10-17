@@ -1,5 +1,4 @@
 import React from "react"
-import { Provider } from "react-redux"
 import { createStore } from "redux"
 import { mount } from "enzyme"
 import { spy } from "sinon"
@@ -13,21 +12,19 @@ describe("RemoteRetro component", () => {
     currentUser: stubUser,
     retroChannel: mockRetroChannel,
     users: [],
-    ideas: [],
-    stage: "idea-generation",
     userToken: "",
+    store: createStore(() => ({
+      users: [],
+      ideas: [],
+      stage: "idea-generation",
+    })),
   }
 
-  const dummyStore = createStore(() => ({}))
   context("when the component mounts", () => {
     it("triggers a hotjar event, passing the stage", () => {
       const hotjarSpy = spy(global, "hj")
 
-      mount(
-        <Provider store={dummyStore} >
-          <RemoteRetro {...defaultProps} stage="closed" />
-        </Provider>
-      )
+      mount(<RemoteRetro {...defaultProps} stage="closed" />)
 
       expect(hotjarSpy.calledWith("trigger", "closed")).to.eql(true)
       hotjarSpy.restore()
