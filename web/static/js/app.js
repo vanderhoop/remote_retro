@@ -3,10 +3,8 @@
 import React from "react"
 import { render } from "react-dom"
 import { createStore, bindActionCreators } from "redux"
-import { Provider } from "react-redux"
 import { AppContainer } from "react-hot-loader"
 
-import RemoteRetro from "./components/remote_retro"
 import RetroChannel from "./services/retro_channel"
 import rootReducer from "./reducers"
 import actions from "./actions"
