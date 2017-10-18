@@ -34,10 +34,13 @@ retroChannel.join()
       )
     }
 
+    // initial render
     renderWithHotReload()
+    // ensure rerenders on store updates
     store.subscribe(renderWithHotReload)
 
     if (module.hot) {
+      // ensure rerenders on module updates
       module.hot.accept("./components/remote_retro", renderWithHotReload)
       enableHotCssModuleUpdates()
     }
