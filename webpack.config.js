@@ -37,7 +37,6 @@ module.exports = {
     publicPath: OUTPUT_PUBLIC_PATH,
   },
   devServer: {
-    hot: true,
     port: DEV_SERVER_PORT,
     contentBase: OUTPUT_PATH,
     publicPath: OUTPUT_PUBLIC_PATH,
