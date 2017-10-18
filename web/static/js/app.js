@@ -13,7 +13,7 @@ import enableHotCssModuleUpdates from "./dev/enable_hot_css_module_updates"
 
 const { userToken, retroUUID } = window
 
-const configureStore = (rootReducer) => {
+const configureStore = rootReducer => {
   const store = createStore(
     rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -21,8 +21,8 @@ const configureStore = (rootReducer) => {
 
   // ensures that updates to reducers are hot reloaded
   if (module.hot) {
-    module.hot.accept('./reducers/index', () => {
-      const nextRootReducer = require('./reducers/index').default
+    module.hot.accept("./reducers/index", () => {
+      const nextRootReducer = require("./reducers/index").default
       store.replaceReducer(nextRootReducer)
     })
   }
@@ -47,7 +47,7 @@ retroChannel.join()
         <AppContainer>
           <RemoteRetro retroChannel={retroChannel} userToken={userToken} store={store} />
         </AppContainer>,
-        document.querySelector('.react-root')
+        document.querySelector(".react-root")
       )
     }
 
