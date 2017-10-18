@@ -2,35 +2,18 @@
 
 import React from "react"
 import { render } from "react-dom"
-import { createStore, bindActionCreators } from "redux"
+import { bindActionCreators } from "redux"
 import { AppContainer } from "react-hot-loader"
 
 import RetroChannel from "./services/retro_channel"
-import rootReducer from "./reducers"
+import configureStore from "./configure_store"
 import actions from "./actions"
 
 import enableHotCssModuleUpdates from "./dev/enable_hot_css_module_updates"
 
 const { userToken, retroUUID } = window
 
-const configureStore = rootReducer => {
-  const store = createStore(
-    rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-
-  // ensures that updates to reducers are hot reloaded
-  if (module.hot) {
-    module.hot.accept("./reducers/index", () => {
-      const nextRootReducer = require("./reducers/index").default
-      store.replaceReducer(nextRootReducer)
-    })
-  }
-
-  return store
-}
-
-const store = configureStore(rootReducer)
+const store = configureStore()
 
 const actionz = bindActionCreators({ ...actions }, store.dispatch)
 const retroChannel = RetroChannel.configure({ userToken, retroUUID, store, actions: actionz })
