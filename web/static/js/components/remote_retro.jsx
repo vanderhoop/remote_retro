@@ -47,9 +47,8 @@ export class RemoteRetro extends Component {
 RemoteRetro.propTypes = {
   retroChannel: AppPropTypes.retroChannel.isRequired,
   store: PropTypes.object.isRequired,
+  stage: AppPropTypes.stage.isRequired,
   userToken: PropTypes.string.isRequired,
-  insertedAt: PropTypes.string,
-  alert: PropTypes.object,
 }
 
 export default RemoteRetro
