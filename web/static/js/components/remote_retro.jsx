@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { Provider } from "react-redux"
+import { connect } from "react-redux"
 
 import * as AppPropTypes from "../prop_types"
 import Room from "./room"
@@ -20,35 +20,46 @@ export class RemoteRetro extends Component {
   }
 
   render() {
-    const { store, userToken, retroChannel } = this.props
-    const { users, ideas, stage, insertedAt, alert } = store.getState()
+    const { users, ideas, userToken, retroChannel, stage, insertedAt, alert } = this.props
 
     const currentUser = users.find(user => user.token === userToken)
 
     return (
-      <Provider store={store}>
-        <div className={stage}>
-          <Room
-            currentUser={currentUser}
-            users={users}
-            ideas={ideas}
-            stage={stage}
-            retroChannel={retroChannel}
-          />
-          <Alert config={alert} />
-          <ShareRetroLinkModal retroCreationTimestamp={insertedAt} />
-          <DoorChime users={users} />
-        </div>
-      </Provider>
+      <div className={stage}>
+        <Room
+          currentUser={currentUser}
+          users={users}
+          ideas={ideas}
+          stage={stage}
+          retroChannel={retroChannel}
+        />
+        <Alert config={alert} />
+        <ShareRetroLinkModal retroCreationTimestamp={insertedAt} />
+        <DoorChime users={users} />
+      </div>
     )
   }
 }
 
 RemoteRetro.propTypes = {
   retroChannel: AppPropTypes.retroChannel.isRequired,
-  store: PropTypes.object.isRequired,
-  stage: AppPropTypes.stage.isRequired,
+  users: AppPropTypes.users,
+  ideas: AppPropTypes.ideas,
   userToken: PropTypes.string.isRequired,
+  stage: AppPropTypes.stage.isRequired,
+  insertedAt: PropTypes.string,
+  alert: PropTypes.object,
 }
 
-export default RemoteRetro
+RemoteRetro.defaultProps = {
+  users: [],
+  ideas: [],
+  insertedAt: null,
+  alert: null,
+}
+
+const mapStateToProps = state => ({ ...state })
+
+export default connect(
+  mapStateToProps
+)(RemoteRetro)

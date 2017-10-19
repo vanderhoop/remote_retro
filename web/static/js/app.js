@@ -3,6 +3,7 @@
 import React from "react"
 import { render } from "react-dom"
 import { bindActionCreators } from "redux"
+import { Provider } from "react-redux"
 import { AppContainer } from "react-hot-loader"
 
 import RetroChannel from "./services/retro_channel"
@@ -28,7 +29,9 @@ retroChannel.join()
 
       render(
         <AppContainer>
-          <RemoteRetro retroChannel={retroChannel} userToken={userToken} store={store} />
+          <Provider store={store} key={Date.now()}>
+            <RemoteRetro retroChannel={retroChannel} userToken={userToken} />
+          </Provider>
         </AppContainer>,
         document.querySelector(".react-root")
       )
@@ -36,12 +39,10 @@ retroChannel.join()
 
     // initial render
     renderWithHotReload()
-    // ensure rerenders on store updates
-    store.subscribe(renderWithHotReload)
 
     if (module.hot) {
       // ensure rerenders on module updates
-      module.hot.accept("./components/remote_retro", renderWithHotReload)
+      module.hot.accept(() => { renderWithHotReload() })
       enableHotCssModuleUpdates()
     }
   })
