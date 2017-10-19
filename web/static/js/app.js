@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/jsx-filename-extension, global-require */
 
 import React from "react"
 import { render } from "react-dom"

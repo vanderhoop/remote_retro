@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 import { createStore } from "redux"
 
 import rootReducer from "./reducers"
