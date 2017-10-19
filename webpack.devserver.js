@@ -9,6 +9,7 @@ new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
   compress: true,
+  clientLogLevel: "none",
   headers: { "Access-Control-Allow-Origin": "*" },
   stats: { modules: false },
 }).listen(port, "0.0.0.0", err => {
