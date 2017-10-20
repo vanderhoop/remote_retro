@@ -10,8 +10,6 @@ import RetroChannel from "./services/retro_channel"
 import configureStore from "./configure_store"
 import actions from "./actions"
 
-import enableHotCssModuleUpdates from "./dev/enable_hot_css_module_updates"
-
 const { userToken, retroUUID } = window
 
 const store = configureStore()
@@ -43,6 +41,5 @@ retroChannel.join()
     if (module.hot) {
       // ensure rerenders on module updates
       module.hot.accept(() => { renderWithHotReload() })
-      enableHotCssModuleUpdates()
     }
   })
