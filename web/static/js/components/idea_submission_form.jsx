@@ -19,15 +19,16 @@ const PLACEHOLDER_TEXTS = {
 
 const pushUserTypingEventThrottled = throttle((retroChannel, currentUserToken) => {
   retroChannel.push("user_typing_idea", { userToken: currentUserToken })
-}, USER_TYPING_ANIMATION_DURATION - 100)
+}, 0)//USER_TYPING_ANIMATION_DURATION - 100)
 
 export class IdeaSubmissionForm extends Component {
   constructor(props) {
+    console.log('get a wife')
     super(props)
     this.defaultCategory = "happy"
     this.state = {
       body: "",
-      category: props.showActionItem ? "action-item" : this.defaultCategory,
+      category: this.defaultCategory,
       ideaEntryStarted: false,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -36,11 +37,6 @@ export class IdeaSubmissionForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.showActionItem !== this.props.showActionItem) {
-      const category = nextProps.showActionItem ? "action-item" : this.defaultCategory
-      this.setState({ category })
-    }
-
     if (this.props.alert && !nextProps.alert) { this.ideaInput.focus() }
   }
 
@@ -125,7 +121,6 @@ IdeaSubmissionForm.propTypes = {
   alert: AppPropTypes.alert,
   currentUser: AppPropTypes.user.isRequired,
   retroChannel: AppPropTypes.retroChannel.isRequired,
-  showActionItem: PropTypes.bool.isRequired,
   stage: AppPropTypes.stage,
 }
 
