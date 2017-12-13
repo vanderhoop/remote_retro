@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import throttle from "lodash/throttle"
-import PropTypes from "prop-types"
 import * as AppPropTypes from "../prop_types"
 import { USER_TYPING_ANIMATION_DURATION } from "../services/user_activity"
 
@@ -9,7 +8,7 @@ import styles from "./css_modules/idea_submission_form.css"
 
 const pushUserTypingEventThrottled = throttle((retroChannel, currentUserToken) => {
   retroChannel.push("user_typing_action_item", { userToken: currentUserToken })
-}, 0)// USER_TYPING_ANIMATION_DURATION - 100, { leading: true })
+}, USER_TYPING_ANIMATION_DURATION - 100, { leading: true })
 
 export class ActionItemSubmissionForm extends Component {
   constructor(props) {

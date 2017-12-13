@@ -10,7 +10,7 @@ import styles from "./css_modules/idea.css"
 import { getUser } from "../reducers/users"
 
 export const Idea = props => {
-  const { idea, currentUser, retroChannel, stage, assignee } = props
+  const { idea, currentUser, retroChannel } = props
   const classes = classNames(styles.index, {
     [styles.highlighted]: idea.isHighlighted,
   })
@@ -26,30 +26,6 @@ export const Idea = props => {
     content = <IdeaReadOnlyContent {...props} />
   }
 
-  const assigneeTag = (name) => (
-    <span className={styles.assignee}>({name})</span>
-  )
-
-  const renderText = () => (
-    idea.liveEditText || idea.body
-  )
-
-  const renderEditedIndicator = () => (
-    isEdited && <span className={styles.editedIndicator}> (edited)</span>
-  )
-
-  const readOnlyIdea = (
-    <div className={styles.ideaWrapper}>
-      { renderIdeaControls() }
-      { renderMessage() }
-      <span data-hj-masked>{ renderText() }</span>
-      { assignee && assigneeTag(assignee.given_name) }
-      { renderEditedIndicator() }
-    </div>
-  )
-
-  const shouldAppearEditable = idea.editing && isFacilitator
-
   return (
     <li className={classes} title={idea.body} key={idea.id}>
       { content }
@@ -61,7 +37,6 @@ Idea.propTypes = {
   idea: AppPropTypes.idea.isRequired,
   retroChannel: AppPropTypes.retroChannel.isRequired,
   currentUser: AppPropTypes.user.isRequired,
-  stage: AppPropTypes.stage.isRequired,
   assignee: AppPropTypes.user,
 }
 
