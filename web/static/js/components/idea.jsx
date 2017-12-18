@@ -1,13 +1,15 @@
 import React from "react"
 import classNames from "classnames"
+import { connect } from "react-redux"
 
 import IdeaEditForm from "./idea_edit_form"
 import IdeaLiveEditContent from "./idea_live_edit_content"
 import IdeaReadOnlyContent from "./idea_read_only_content"
 import * as AppPropTypes from "../prop_types"
 import styles from "./css_modules/idea.css"
+import { getUser } from "../reducers/users"
 
-const Idea = props => {
+export const Idea = props => {
   const { idea, currentUser, retroChannel } = props
   const classes = classNames(styles.index, {
     [styles.highlighted]: idea.isHighlighted,
@@ -35,6 +37,11 @@ Idea.propTypes = {
   idea: AppPropTypes.idea.isRequired,
   retroChannel: AppPropTypes.retroChannel.isRequired,
   currentUser: AppPropTypes.user.isRequired,
+  assignee: AppPropTypes.user,
 }
 
-export default Idea
+const mapStateToProps = (state, { idea }) => {
+  return { assignee: getUser(state, idea.assignee_id) }
+}
+
+export default connect(mapStateToProps)(Idea)
