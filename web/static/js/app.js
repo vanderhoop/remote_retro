@@ -20,6 +20,7 @@ const retroChannel = RetroChannel.configure({ userToken, retroUUID, store, actio
 retroChannel.join()
   .receive("error", error => console.error(error))
   .receive("ok", initialState => {
+    debugger
     actionz.setInitialState(initialState)
 
     const renderWithHotReload = () => {

@@ -129,7 +129,9 @@ defmodule RemoteRetro.RetroChannel do
       where: retro.id == ^retro_id,
       left_join: ideas in assoc(retro, :ideas), on: ideas.retro_id == retro.id,
       left_join: votes in assoc(retro, :votes), on: votes.idea_id == ideas.id,
-      preload: [ideas: ideas, votes: votes]
+      left_join: participations in assoc(retro, :participations), on: participations.retro_id == retro.id,
+      left_join: users in assoc(retro, :users), on: users.id == participations.user_id,
+      preload: [ideas: ideas, votes: votes, users: users]
 
     Repo.one!(query)
   end
