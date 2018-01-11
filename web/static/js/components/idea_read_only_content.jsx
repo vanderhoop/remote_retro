@@ -19,11 +19,12 @@ const IdeaReadOnlyContent = props => {
 
   const canUserEditIdea = currentUser.is_facilitator || (currentUser.id === idea.user_id)
   const isIdeaEditableInCurrentStage = stage === "idea-generation"
+  const draggable = canUserEditIdea && isIdeaEditableInCurrentStage
 
   return (
     <div
       className={styles.ideaWrapper}
-      draggable={canUserEditIdea && isIdeaEditableInCurrentStage}
+      draggable={draggable}
       onDragStart={handleDragStart(props)}
     >
       <IdeaControls
@@ -32,9 +33,11 @@ const IdeaReadOnlyContent = props => {
         currentUser={currentUser}
         stage={stage}
       />
-      <span data-hj-masked>{ idea.body }</span>
-      {hasAssignee && <span className={styles.assignee}> ({assignee.name})</span>}
-      {isEdited && <span className={styles.editedIndicator}> (edited)</span>}
+      <div className={draggable && "draggable"}>
+        <span data-hj-masked>{ idea.body }</span>
+        {hasAssignee && <span className={styles.assignee}> ({assignee.name})</span>}
+        {isEdited && <span className={styles.editedIndicator}> (edited)</span>}
+      </div>
     </div>
   )
 }

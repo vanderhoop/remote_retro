@@ -3,6 +3,13 @@
   overflow: auto;
 }
 
+:global(.draggable) {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
 .edited-indicator {
   color: #A0A0A8;
   font-size: 0.85rem;
