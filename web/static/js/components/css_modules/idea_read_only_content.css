@@ -8,6 +8,12 @@
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
+
+  &:global(.dragging) {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
 }
 
 .edited-indicator {

@@ -200,7 +200,7 @@ describe("<IdeaReadOnlyContent />", () => {
       expect(mockEvent.dataTransfer.dropEffect).to.eql("move")
     })
 
-    it("sets the idea id on the event data element", () => {
+    it("sets the idea, stringified to JSON, on the event data element", () => {
       const stringifiedIdea = JSON.stringify(idea)
       expect(mockEvent.dataTransfer.setData.calledWith("idea", stringifiedIdea)).to.eql(true)
     })
