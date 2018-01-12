@@ -1,13 +1,13 @@
 import React from "react"
-import UserListItem from "./user_list_item"
+import PresenceListItem from "./presence_list_item"
 import * as AppPropTypes from "../prop_types"
-import styles from "./css_modules/user_list.css"
+import styles from "./css_modules/presence_list.css"
 
-const UserList = props => {
+const PresenceList = props => {
   const presencesSortedByArrival = props.presences.sort((a, b) => a.online_at - b.online_at)
 
   const listItems = presencesSortedByArrival.map(presence =>
-    <UserListItem key={presence.token} user={presence} />
+    <PresenceListItem key={presence.token} user={presence} />
   )
 
   return (
@@ -19,8 +19,8 @@ const UserList = props => {
   )
 }
 
-UserList.propTypes = {
+PresenceList.propTypes = {
   presences: AppPropTypes.presences.isRequired,
 }
 
-export default UserList
+export default PresenceList

@@ -1,12 +1,12 @@
 import React from "react"
 import { shallow, mount } from "enzyme"
 
-import { UserListItem } from "../../web/static/js/components/user_list_item"
+import { PresenceListItem } from "../../web/static/js/components/presence_list_item"
 import STAGES from "../../web/static/js/configs/stages"
 
 const { IDEA_GENERATION, VOTING } = STAGES
 
-const defaultUserAttrs = {
+const defaultPresenceAttrs = {
   given_name: "dylan",
   online_at: 803,
   is_facilitator: false,
@@ -17,30 +17,30 @@ const defaultUserAttrs = {
 const defaultProps = {
   votes: [],
   stage: IDEA_GENERATION,
-  user: defaultUserAttrs,
+  user: defaultPresenceAttrs,
 }
 
-describe("UserListItem", () => {
+describe("PresenceListItem", () => {
   let wrapper
   let user
 
   describe("passed a non-facilitator user", () => {
-    const nonFacilitator = { ...defaultUserAttrs, is_facilitator: false }
+    const nonFacilitator = { ...defaultPresenceAttrs, is_facilitator: false }
 
     it("renders a list item that does not label the user a facilitator", () => {
       const wrapper = shallow(
-        <UserListItem {...defaultProps} user={nonFacilitator} />
+        <PresenceListItem {...defaultProps} user={nonFacilitator} />
       )
       expect(wrapper.text()).not.to.match(/facilitator/i)
     })
   })
 
   describe("passed a facilitator user", () => {
-    const facilitator = { ...defaultUserAttrs, is_facilitator: true }
+    const facilitator = { ...defaultPresenceAttrs, is_facilitator: true }
 
     it("renders a list item with text labeling the user facilitator", () => {
       const wrapper = shallow(
-        <UserListItem {...defaultProps} user={facilitator} />
+        <PresenceListItem {...defaultProps} user={facilitator} />
       )
       expect(wrapper.text()).to.match(/dylan \(facilitator\)/i)
     })
@@ -48,11 +48,11 @@ describe("UserListItem", () => {
 
   context("when the stage is anything but 'voting'", () => {
     context("when passed a user who *is* currently typing", () => {
-      const user = { ...defaultUserAttrs, is_typing: true }
+      const user = { ...defaultPresenceAttrs, is_typing: true }
 
       it("renders the user with an ellipsis animation", () => {
         const wrapper = mount(
-          <UserListItem
+          <PresenceListItem
             {...defaultProps}
             user={user}
             stage={IDEA_GENERATION}
@@ -64,11 +64,11 @@ describe("UserListItem", () => {
     })
 
     context("when passed a user who is *not* currently typing", () => {
-      const user = { ...defaultUserAttrs, is_typing: false }
+      const user = { ...defaultPresenceAttrs, is_typing: false }
 
       it("does not render the user with an ellipsis animation", () => {
         const wrapper = shallow(
-          <UserListItem
+          <PresenceListItem
             {...defaultProps}
             stage={IDEA_GENERATION}
             user={user}
@@ -80,31 +80,31 @@ describe("UserListItem", () => {
   })
 
   it("changes the user's image url such that its `sz` query attribute's becomes 200", () => {
-    user = { ...defaultUserAttrs, picture: "http://some/image.jpg?sz=50" }
-    wrapper = shallow(<UserListItem {...defaultProps} user={user} />)
+    user = { ...defaultPresenceAttrs, picture: "http://some/image.jpg?sz=50" }
+    wrapper = shallow(<PresenceListItem {...defaultProps} user={user} />)
     const imageSrc = wrapper.find("img.picture").prop("src")
     expect(imageSrc).to.equal("http://some/image.jpg?sz=200")
   })
 
   context("when the stage is voting", () => {
     it("does not render the animated ellipsis wrapper", () => {
-      const wrapper = shallow(<UserListItem {...defaultProps} stage={VOTING} />)
+      const wrapper = shallow(<PresenceListItem {...defaultProps} stage={VOTING} />)
       expect(wrapper.text()).to.not.match(/animatedellipsis/i)
     })
 
     it("renders a voting status span", () => {
-      const wrapper = shallow(<UserListItem {...defaultProps} stage={VOTING} />)
+      const wrapper = shallow(<PresenceListItem {...defaultProps} stage={VOTING} />)
       expect(wrapper.html()).to.contain("allVotesIn")
     })
 
     context("and the given user has more than 2 votes", () => {
-      const userWithFiveVotes = { ...defaultUserAttrs, id: 999 }
+      const userWithFiveVotes = { ...defaultPresenceAttrs, id: 999 }
       const voteForUser = { user_id: 999 }
       const votes = [voteForUser, voteForUser, voteForUser]
 
       it("renders an opaque span indicating that the user is done voting", () => {
         const wrapper = shallow(
-          <UserListItem
+          <PresenceListItem
             user={userWithFiveVotes}
             stage={VOTING}
             votes={votes}
@@ -116,13 +116,13 @@ describe("UserListItem", () => {
     })
 
     context("and the given user has less than 3 votes", () => {
-      const userWithFourVotes = { ...defaultUserAttrs, id: 999 }
+      const userWithFourVotes = { ...defaultPresenceAttrs, id: 999 }
       const voteForUser = { user_id: 999 }
       const votes = [voteForUser, voteForUser]
 
       it("does not apply opaqueness to text indicating that the user is done voting", () => {
         const wrapper = shallow(
-          <UserListItem
+          <PresenceListItem
             user={userWithFourVotes}
             stage={VOTING}
             votes={votes}

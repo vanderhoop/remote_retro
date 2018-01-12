@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import UserList from "./user_list"
+import PresenceList from "./presence_list"
 import StageProgressionButton from "./stage_progression_button"
 import ShareRetroLinkModal from "./share_retro_link_modal"
 import * as AppPropTypes from "../prop_types"
@@ -26,7 +26,7 @@ const LobbyStage = props => {
         </div>
       </div>
       <div className="row">
-        <UserList {...props} />
+        <PresenceList {...props} />
       </div>
       <div className="row">
         <div className="thirteen wide mobile eight wide tablet four wide computer column">

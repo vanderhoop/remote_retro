@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-import UserList from "./user_list"
+import PresenceList from "./presence_list"
 import StageProgressionButton from "./stage_progression_button"
 import PrimeDirective from "./prime_directive"
 
@@ -13,7 +13,7 @@ const PrimeDirectiveStage = props => {
         <PrimeDirective />
       </div>
       <div className="row">
-        <UserList {...props} />
+        <PresenceList {...props} />
       </div>
       <div className="row">
         <div className="thirteen wide mobile eight wide tablet four wide computer column">
