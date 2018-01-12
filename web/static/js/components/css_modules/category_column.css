@@ -10,6 +10,10 @@
     padding-right: var(--inner-column-padding);
   }
 
+  &:global(.dragged-over) {
+    background-color: rgba(55, 55, 55, 0.1);
+  }
+
   .column-head {
     margin-bottom: 0;
     padding-right: 0;
